@@ -13,7 +13,7 @@ import {BigNumber} from "bignumber.js";
 
 const PURCHASE_STOCK_CTR = "0x393a674b7a667a410e9CF08fC8870f9d1e6f526E";
 const CONVERTER_CTR = "0x58dDe6be4E52700D38543C413a43F43b94F5091d";
-const EURC_CTR = "0x808456652fdb597867f38412077A9182bf77359F";
+const EURC_CTR = "0xd74cc5d436923b8ba2c179b4bCA2841D8A52C5B5";
 
 
 // USDC ABI (ERC-20 minimal)
@@ -97,15 +97,16 @@ export default function Trade() {
         }
 
         const signer = provider.getSigner();
-        const dai = new ethers.Contract(CONVERTER_CTR, ABI, signer);
 
         const eurc = new ethers.Contract(EURC_CTR, ERC20_ABI, signer);
 
-        await eurc.approve(address, new BigNumber(amountNotRefined2).multipliedBy(Math.pow(10, 6)).toString()).then(async ()=> {
-            await dai.issueEURP(address,new BigNumber(amountNotRefined2).multipliedBy(Math.pow(10, 6)).toString());
+        await eurc.approve(CONVERTER_CTR, new BigNumber(amountNotRefined2).multipliedBy(Math.pow(10, 6)).toString()).then(async ()=> {
 
         });
+        const dai = new ethers.Contract(CONVERTER_CTR, ABI, signer);
 
+
+        await dai.issueEURP(address,new BigNumber(amountNotRefined2).multipliedBy(Math.pow(10, 6)).toString());
 
     }
 
