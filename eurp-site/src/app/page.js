@@ -13,11 +13,17 @@ export default function Home() {
               <button className="mt-8 px-8 py-3 bg-blue-600 text-white text-lg rounded-lg shadow hover:bg-blue-700">
                   Saber Mais
               </button>
+              <Link href="/app">
+                  <button className="mt-8 px-8 py-3 bg-blue-600 text-white text-lg rounded-lg shadow hover:bg-blue-700">
+                      Mint EURP
+                  </button>
+              </Link>
+
           </section>
 
           <section className="py-20 bg-tether-dark border-b border-gray-800">
               <div className="container mx-auto px-4 max-w-6xl">
-                  <div
+              <div
                       className="flex flex-col lg:flex-row items-center justify-between space-y-10 lg:space-y-0 lg:space-x-12">
 
                       {/* Left Content Area */}
