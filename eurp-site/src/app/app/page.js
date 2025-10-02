@@ -101,8 +101,10 @@ export default function Trade() {
 
         const eurc = new ethers.Contract(EURC_CTR, ERC20_ABI, signer);
 
-        await eurc.approve(address, new BigNumber(amountNotRefined2).multipliedBy(Math.pow(10, 6)).toString());
-        await dai.issueEURP(address,new BigNumber(amountNotRefined2).multipliedBy(Math.pow(10, 18)).toString());
+        await eurc.approve(address, new BigNumber(amountNotRefined2).multipliedBy(Math.pow(10, 6)).toString()).then(async ()=> {
+            await dai.issueEURP(address,new BigNumber(amountNotRefined2).multipliedBy(Math.pow(10, 6)).toString());
+
+        });
 
 
     }
