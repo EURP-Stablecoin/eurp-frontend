@@ -12,7 +12,7 @@ import {FaTelegram, FaTwitter} from "react-icons/fa";
 import {BigNumber} from "bignumber.js";
 
 const PURCHASE_STOCK_CTR = "0x393a674b7a667a410e9CF08fC8870f9d1e6f526E";
-const CONVERTER_CTR = "0x8c0A72e732d099d7DD9e7Ce8cc9c4Db88960f0f0";
+const CONVERTER_CTR = "0xeb88428c14fa0E906F162df58878C1606106A2B1";
 const EURC_CTR = "0x808456652fdb597867f38412077A9182bf77359F";
 const EURP_CTR = "0x5a8F8BF4d5B56563C2b083e62092727ba6154364";
 
@@ -45,6 +45,24 @@ const ABI =
                 }
             ],
             "name": "issueEURP",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "receiver",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "amount",
+                    "type": "uint256"
+                }
+            ],
+            "name": "burnEURP",
             "outputs": [],
             "stateMutability": "nonpayable",
             "type": "function"
@@ -142,8 +160,8 @@ export default function Trade() {
 
         const eurp = new ethers.Contract(EURP_CTR, ERC20_ABI, signer);
 
-        await eurp.approve(address, amountNotRefined2 );
-        await dai.burnEURP(address, amountNotRefined2 );
+        await eurp.approve(CONVERTER_CTR, new BigNumber(amountNotRefined2).multipliedBy(Math.pow(10, 18)).toString() );
+        await dai.burnEURP(address,new BigNumber(amountNotRefined2).multipliedBy(Math.pow(10, 6)).toString() );
 
 
     }
