@@ -115,7 +115,7 @@ export default function Trade() {
             const formatted2 = ethers.utils.formatUnits(balance2, decimals2);
 
             setBal(formatted)
-            setBalRedeem(formatted2)
+            setBalRedeem(new BigNumber(formatted2).toFixed(2))
             //setValidSigner(signer)
         };
 
@@ -168,6 +168,102 @@ export default function Trade() {
 
     return (
         <div className="min-h-screen bg-[#e9f3ff] text-gray-900">
+            <div>
+                <ConnectButton.Custom>
+                    {({
+                          account,
+                          chain,
+                          openAccountModal,
+                          openChainModal,
+                          openConnectModal,
+                          authenticationStatus,
+                          mounted,
+                      }) => {
+                        // Note: If your app doesn't use authentication, you
+                        // can remove all 'authenticationStatus' checks
+                        const ready = mounted && authenticationStatus !== 'loading';
+                        const connected =
+                            ready &&
+                            account &&
+                            chain &&
+                            (!authenticationStatus ||
+                                authenticationStatus === 'authenticated');
+
+                        return (
+                            <div
+                                {...(!ready && {
+                                    'aria-hidden': true,
+                                    'style': {
+                                        opacity: 0,
+                                        pointerEvents: 'none',
+                                        userSelect: 'none',
+                                    },
+                                })}
+                            >
+                                {(() => {
+                                    if (!connected) {
+                                        return (
+                                            <button onClick={openConnectModal} type="button"
+                                                    className="w-full bg-gradient-to-r from-emerald-500 to-blue-500  cursor-pointer  text-white p-4 rounded-lg cursor-pointer">
+                                                Connect Wallet
+                                            </button>
+                                        );
+                                    }
+
+                                    if (chain.unsupported) {
+                                        return (
+                                            <button onClick={openChainModal} type="button">
+                                                Wrong network
+                                            </button>
+                                        );
+                                    }
+
+                                    return (
+                                        <div className="flex flex-row-reverse justify-right items-right text-right w-full p-4 cursor-pointer" style={{display: 'flex', gap: 12}}>
+                                            <button
+                                                onClick={openChainModal}
+                                                className="flex flex-row justify-right bg-white w-[200px] h-12 p-4 rounded cursor-pointer"
+                                                style={{display: 'flex', alignItems: 'center'}}
+                                                type="button"
+                                            >
+                                                {chain.hasIcon && (
+                                                    <div
+                                                        className=""
+                                                        style={{
+                                                            background: chain.iconBackground,
+                                                            width: 12,
+                                                            height: 12,
+                                                            borderRadius: 999,
+                                                            overflow: 'hidden',
+                                                            marginRight: 4,
+                                                        }}
+                                                    >
+                                                        {chain.iconUrl && (
+                                                            <img
+                                                                alt={chain.name ?? 'Chain icon'}
+                                                                src={chain.iconUrl}
+                                                                style={{width: 12, height: 12}}
+                                                            />
+                                                        )}
+                                                    </div>
+                                                )}
+                                                {chain.name}
+                                            </button>
+
+                                            <button onClick={openAccountModal} type="button">
+                                                {account.displayName}
+                                                {account.displayBalance
+                                                    ? ` (${account.displayBalance})`
+                                                    : ''}
+                                            </button>
+                                        </div>
+                                    );
+                                })()}
+                            </div>
+                        );
+                    }}
+                </ConnectButton.Custom>
+            </div>
             <section className="flex flex-col justify-center items-center px-6 py-6 lg:px-8">
                 <div className="py-8 text-[28px] font-bold">
                     <h1>Ensuring Freedom in Capital Markets</h1>
@@ -181,9 +277,10 @@ export default function Trade() {
                     </div>
                 </div>
                 <div
-                    className="flex flex-col shadow-white  ring-blue-500/50  justify-center items-center p-4 rounded-xl border border-1 w-1/3 h-1/3 bg-gray-50 text-gray-900">
+                    className="flex flex-col shadow-white  ring-blue-500/50  justify-center items-center p-4 rounded-xl border border-1 w-full md:w-1/3 h-1/3 bg-gray-50 text-gray-900">
                     {
-                        mintOrRedeem ? <div className="font-bold p-2">Redeem EURP</div> : <div className="font-bold p-2">Issue EURP</div>
+                        mintOrRedeem ? <div className="font-bold p-2">Redeem EURP</div> :
+                            <div className="font-bold p-2">Issue EURP</div>
                     }
                     <div className="p-4 w-full">
                         <select className="w-full h-12 border px-4">
@@ -195,10 +292,11 @@ export default function Trade() {
                         Bal:
                         {
                             mintOrRedeem ?
-                        balRedeem +" EURP" : bal +" EURC"}
+                                balRedeem + " EURP" : bal + " EURC"}
                     </div>
                     <div className="p-4 w-full">
-                        <input type="number" className="p-4 border w-full" onChange={(e) => setAmount2(e.target.value)} value={amountNotRefined2}/>
+                        <input type="number" className="p-4 border w-full" onChange={(e) => setAmount2(e.target.value)}
+                               value={amountNotRefined2}/>
 
                     </div>
                     <div>
@@ -302,7 +400,7 @@ export default function Trade() {
                                                     if (!connected) {
                                                         return (
                                                             <button onClick={openConnectModal} type="button"
-                                                                    className="w-full bg-gradient-to-r from-emerald-500 to-blue-500  text-white p-4 rounded-lg cursor-pointer">
+                                                                    className="w-full bg-gradient-to-r from-emerald-500 to-blue-500  cursor-pointer  text-white p-4 rounded-lg cursor-pointer">
                                                                 Connect Wallet
                                                             </button>
                                                         );
@@ -319,7 +417,7 @@ export default function Trade() {
                                                     return (
                                                         <div style={{display: 'flex', gap: 12}}>
                                                             <button onClick={() => issue()}
-                                                                    className="bg-[#1d8fff] p-4 rounded font-bold text-white">Mint {amountNotRefined2} EURP
+                                                                    className="bg-[#1d8fff] p-4 rounded font-bold text-white cursor-pointer">Mint {amountNotRefined2} EURP
                                                             </button>
 
                                                         </div>
