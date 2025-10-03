@@ -12,9 +12,9 @@ import {FaTelegram, FaTwitter} from "react-icons/fa";
 import {BigNumber} from "bignumber.js";
 
 const PURCHASE_STOCK_CTR = "0x393a674b7a667a410e9CF08fC8870f9d1e6f526E";
-const CONVERTER_CTR = "0x58dDe6be4E52700D38543C413a43F43b94F5091d";
+const CONVERTER_CTR = "0x8c0A72e732d099d7DD9e7Ce8cc9c4Db88960f0f0";
 const EURC_CTR = "0x808456652fdb597867f38412077A9182bf77359F";
-
+const EURP_CTR = "0x5a8F8BF4d5B56563C2b083e62092727ba6154364";
 
 // USDC ABI (ERC-20 minimal)
 const ERC20_ABI = [
@@ -55,6 +55,7 @@ export default function Trade() {
 
     const [amountNotRefined2, setAmount2] = useState(1);
     const [bal, setBal] = useState("0.00");
+    const [balRedeem, setBalRedeem] = useState("0.00");
     const [mintOrRedeem, setMintOrRedeem] = useState(false);
     const { address } = useAccount();
     const { data: walletClient3 } = useWalletClient(); // EIP-1193 provider
@@ -88,6 +89,15 @@ export default function Trade() {
             const formatted = ethers.utils.formatUnits(balance, decimals);
 
             setBal(formatted)
+
+            const dai2 = new ethers.Contract(EURP_CTR, ERC20_ABI, signer);
+            const balance2 = await dai2.balanceOf(address);
+
+            const decimals2 = await dai2.decimals();
+            const formatted2 = ethers.utils.formatUnits(balance2, decimals2);
+
+            setBal(formatted)
+            setBalRedeem(formatted2)
             //setValidSigner(signer)
         };
 
@@ -107,10 +117,11 @@ export default function Trade() {
 
         const eurc = new ethers.Contract(EURC_CTR, ERC20_ABI, signer);
 
-        await eurc.approve(CONVERTER_CTR, new BigNumber(amountNotRefined2).multipliedBy(Math.pow(10, 6)).toString()).then(async ()=> {
+        const validTx = await eurc.approve(CONVERTER_CTR, new BigNumber(amountNotRefined2).multipliedBy(Math.pow(10, 6)).toString());
 
-        });
+        await validTx.wait();
         const dai = new ethers.Contract(CONVERTER_CTR, ABI, signer);
+
 
 
         await dai.issueEURP(address,new BigNumber(amountNotRefined2).multipliedBy(Math.pow(10, 6)).toString());
@@ -127,11 +138,11 @@ export default function Trade() {
         }
 
         const signer = provider.getSigner();
-        const dai = new ethers.Contract(PURCHASE_STOCK_CTR, PURCHASE_CTR_ABI, signer);
+        const dai = new ethers.Contract(CONVERTER_CTR, PURCHASE_CTR_ABI, signer);
 
-        const eurp = new ethers.Contract(PURCHASE_STOCK_CTR, ERC20_ABI, signer);
+        const eurp = new ethers.Contract(EURP_CTR, ERC20_ABI, signer);
 
-        await eurc.approve(address, amountNotRefined2 );
+        await eurp.approve(address, amountNotRefined2 );
         await dai.burnEURP(address, amountNotRefined2 );
 
 
@@ -163,13 +174,13 @@ export default function Trade() {
                     </div>
 
                     <div className="w-full px-4 text-right">
-                        Bal: {bal}
+                        Bal:
                         {
                             mintOrRedeem ?
-                        " EURP" : " EURC"}
+                        balRedeem +" EURP" : bal +" EURC"}
                     </div>
                     <div className="p-4 w-full">
-                        <input className="p-4 border w-full" onChange={(e) => setAmount2(e.target.value)} value={amountNotRefined2}/>
+                        <input type="number" className="p-4 border w-full" onChange={(e) => setAmount2(e.target.value)} value={amountNotRefined2}/>
 
                     </div>
                     <div>
