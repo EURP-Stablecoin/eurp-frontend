@@ -156,7 +156,7 @@ export default function Trade() {
         }
 
         const signer = provider.getSigner();
-        const dai = new ethers.Contract(CONVERTER_CTR, PURCHASE_CTR_ABI, signer);
+        const dai = new ethers.Contract(CONVERTER_CTR, ABI, signer);
 
         const eurp = new ethers.Contract(EURP_CTR, ERC20_ABI, signer);
 
