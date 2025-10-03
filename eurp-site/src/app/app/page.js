@@ -54,6 +54,7 @@ const ABI =
 export default function Trade() {
 
     const [amountNotRefined2, setAmount2] = useState(1);
+    const [bal, setBal] = useState("0.00");
     const [mintOrRedeem, setMintOrRedeem] = useState(false);
     const { address } = useAccount();
     const { data: walletClient3 } = useWalletClient(); // EIP-1193 provider
@@ -80,7 +81,13 @@ export default function Trade() {
             }
 
             const signer = provider.getSigner();
+            const dai = new ethers.Contract(EURC_CTR, ERC20_ABI, signer);
+            const balance = await dai.balanceOf(address);
 
+            const decimals = await dai.decimals();
+            const formatted = ethers.utils.formatUnits(balance, decimals);
+
+            setBal(formatted)
             //setValidSigner(signer)
         };
 
@@ -156,7 +163,7 @@ export default function Trade() {
                     </div>
 
                     <div className="w-full px-4 text-right">
-                        Bal: 0.00
+                        Bal: {bal}
                         {
                             mintOrRedeem ?
                         " EURP" : " EURC"}
