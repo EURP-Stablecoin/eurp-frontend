@@ -335,7 +335,7 @@ export default function Trade() {
 
                 </div>
                 <div className="flex flex-row text-[24px]">
-                    <Link href="https://t.me/eurp_protocol">
+                    <Link href="https://t.me/eurp_protocol" target="_blank">
                         <div className="p-4">
                             <FaTelegram/>
                         </div>
