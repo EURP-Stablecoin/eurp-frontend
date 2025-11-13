@@ -161,9 +161,11 @@ export default function Trade() {
         const eurp = new ethers.Contract(EURP_CTR, ERC20_ABI, signer);
 
        const validTx = await eurp.approve(CONVERTER_CTR, new BigNumber(amountNotRefined2).multipliedBy(Math.pow(10, 18)).toString() );
-        await validTx.wait();
+        await validTx.wait().then(async (e) =>
+            await dai.burnEURP(address,new BigNumber(amountNotRefined2).multipliedBy(Math.pow(10, 6)).toString() );
 
-        await dai.burnEURP(address,new BigNumber(amountNotRefined2).multipliedBy(Math.pow(10, 6)).toString() );
+    );
+
 
     }
 
