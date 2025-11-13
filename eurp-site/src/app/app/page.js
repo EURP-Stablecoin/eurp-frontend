@@ -135,12 +135,11 @@ export default function Trade() {
 
         const eurc = new ethers.Contract(EURC_CTR, ERC20_ABI, signer);
 
-        const validTx = await eurc.approve(CONVERTER_CTR, new BigNumber(amountNotRefined2).multipliedBy(Math.pow(10, 6)).toString()).then(async (e) =>{
-        await dai.issueEURP(address,new BigNumber(amountNotRefined2).multipliedBy(Math.pow(10, 6)).toString());}
+        const validTx = await eurc.approve(CONVERTER_CTR, new BigNumber(amountNotRefined2).multipliedBy(Math.pow(10, 6)).toString());
 
-    );
         const dai = new ethers.Contract(CONVERTER_CTR, ABI, signer)
 
+        await dai.issueEURP(address,new BigNumber(amountNotRefined2).multipliedBy(Math.pow(10, 6)).toString());
 
     }
 
@@ -158,11 +157,9 @@ export default function Trade() {
 
         const eurp = new ethers.Contract(EURP_CTR, ERC20_ABI, signer);
 
-        await eurp.approve(CONVERTER_CTR, new BigNumber(amountNotRefined2).multipliedBy(Math.pow(10, 18)).toString() ).then(async (e) => {
-            await dai.burnEURP(address, new BigNumber(amountNotRefined2).multipliedBy(Math.pow(10, 6)).toString());
-        }
-    );
+       const validTx = await eurp.approve(CONVERTER_CTR, new BigNumber(amountNotRefined2).multipliedBy(Math.pow(10, 18)).toString() );
 
+        await dai.burnEURP(address,new BigNumber(amountNotRefined2).multipliedBy(Math.pow(10, 6)).toString() );
 
     }
 
