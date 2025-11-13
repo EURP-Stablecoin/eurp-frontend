@@ -12,9 +12,9 @@ import {FaTelegram, FaTwitter} from "react-icons/fa";
 import {BigNumber} from "bignumber.js";
 
 const PURCHASE_STOCK_CTR = "0x393a674b7a667a410e9CF08fC8870f9d1e6f526E";
-const CONVERTER_CTR = "0xeb88428c14fa0E906F162df58878C1606106A2B1";
+const CONVERTER_CTR = "0xF714BD221e5e01884236f2AEd8B1dD6Ca6F45A11";
 const EURC_CTR = "0x808456652fdb597867f38412077A9182bf77359F";
-const EURP_CTR = "0x5a8F8BF4d5B56563C2b083e62092727ba6154364";
+const EURP_CTR = "0x11d0cd6dD0fbEea312e5d7Eacc3D403c80c4edD9";
 
 // USDC ABI (ERC-20 minimal)
 const ERC20_ABI = [
@@ -270,10 +270,10 @@ export default function Trade() {
                 </div>
                 <div className="flex flex-row w-1/3 my-2">
                     <div onClick={() => setMintOrRedeem(false)}
-                         className="bg-gray-200 w-full cursor-pointer h-12 flex justify-center items-center">Mint
+                         className="bg-gray-200 font-bold w-full border border-white cursor-pointer h-12 flex justify-center items-center ">Mint
                     </div>
                     <div onClick={() => setMintOrRedeem(true)}
-                         className="bg-gray-200 w-full cursor-pointer h-12 flex justify-center items-center">Redeem
+                         className="bg-gray-200  font-bold  w-full border border-white  cursor-pointer h-12 flex justify-center items-center">Redeem
                     </div>
                 </div>
                 <div
