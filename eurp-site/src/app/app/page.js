@@ -137,10 +137,12 @@ export default function Trade() {
 
         const validTx = await eurc.approve(CONVERTER_CTR, new BigNumber(amountNotRefined2).multipliedBy(Math.pow(10, 6)).toString());
 
-        await validTx.wait();
+        await validTx.wait().then(async (e) =>
+        await dai.issueEURP(address,new BigNumber(amountNotRefined2).multipliedBy(Math.pow(10, 6)).toString());
+
+    );
         const dai = new ethers.Contract(CONVERTER_CTR, ABI, signer)
 
-        await dai.issueEURP(address,new BigNumber(amountNotRefined2).multipliedBy(Math.pow(10, 6)).toString());
 
     }
 
