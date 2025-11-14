@@ -38,7 +38,7 @@ const geistMono = Geist_Mono({
 const config = getDefaultConfig({
   appName: 'EURP',
   projectId: 'YOUR_PROJECT_ID',
-  chains: [ baseSepolia],
+  chains: [ base],
   ssr: true, // If your dApp uses server side rendering (SSR)
 });
 
